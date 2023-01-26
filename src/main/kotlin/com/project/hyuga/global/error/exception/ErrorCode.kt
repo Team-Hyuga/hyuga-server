@@ -5,7 +5,7 @@ enum class ErrorCode(
     val message: String
 ) {
 
-    INVALID_INPUT_VALUE(400, "잘못된 입력값"),
+    BAD_REQUEST(400, "잘못된 입력값"),
 
     INTERNAL_SERVER_ERROR(500, "서버 에러")
 
