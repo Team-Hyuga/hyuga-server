@@ -2,7 +2,7 @@ package com.project.hyuga.global.error.response
 
 import org.springframework.validation.BindingResult
 
-class ValidationError(
+data class ValidationError(
     val field: String,
     val value: String,
     val reason: String
