@@ -13,6 +13,7 @@ class Badge(
     val id: Long,
 
     @field:NotNull
+    @Column(length = 10)
     val name: String,
 
     @field:NotNull
