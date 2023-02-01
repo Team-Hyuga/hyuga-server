@@ -36,4 +36,14 @@ class User(
     @Column(length = 5)
     val authority: Authority
 
-)
+) {
+
+    @Column(columnDefinition = "TINYINT", nullable = false)
+    var problemCount: Int = 0
+        protected set
+
+    fun plusCount() {
+        this.problemCount++
+    }
+
+}
