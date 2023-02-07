@@ -19,7 +19,7 @@ class BadgeStore(
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    val user : User
+    val user: User
 
 ) : BaseTimeEntity() {
 
@@ -27,7 +27,7 @@ class BadgeStore(
     var badgeCount: Int = 0
         protected set
 
-    fun plusCount() {
+    fun addCount() {
         this.badgeCount++
     }
 
