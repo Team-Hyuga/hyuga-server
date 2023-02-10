@@ -1,5 +1,6 @@
 package com.project.hyuga.domain.user.domain
 
+import com.project.hyuga.domain.badge.domain.BadgeStore
 import com.project.hyuga.domain.user.domain.type.Authority
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
@@ -34,7 +35,10 @@ class User(
     @field:NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 5)
-    val authority: Authority
+    val authority: Authority,
+
+    @OneToMany(mappedBy = "user", cascade =[CascadeType.ALL], orphanRemoval = true)
+    val badgeStoreList: MutableList<BadgeStore> =  ArrayList()
 
 ) {
 
