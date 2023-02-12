@@ -20,4 +20,14 @@ class UserReliability(
     @JoinColumn(name = "reliability_id", nullable = false)
     val reliability: Reliability
 
-)
+) {
+
+    @Column(nullable = false)
+    var score: Int = 0
+        protected set
+
+    fun addScore() {
+        this.score++
+    }
+
+}

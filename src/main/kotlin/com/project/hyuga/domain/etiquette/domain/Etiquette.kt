@@ -23,10 +23,6 @@ class Etiquette(
     @Column(length = 13)
     val category: Category,
 
-    @field:NotNull
-    @Column(length = 30)
-    val tag: String,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val writer: User
