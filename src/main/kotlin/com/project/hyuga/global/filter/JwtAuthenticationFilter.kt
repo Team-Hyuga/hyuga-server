@@ -1,7 +1,7 @@
 package com.project.hyuga.global.filter
 
 import com.project.hyuga.global.security.jwt.JwtProperties
-import com.project.hyuga.global.security.jwt.JwtTokenProvider
+import com.project.hyuga.global.security.jwt.JwtProvider
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationFilter(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtProvider: JwtProvider
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -20,7 +20,7 @@ class JwtAuthenticationFilter(
         val token = resolveToken(request)
 
         token?.let {
-            val authentication = jwtTokenProvider.authentication(it)
+            val authentication = jwtProvider.authentication(it)
             SecurityContextHolder.getContext().authentication = authentication
         }
 
