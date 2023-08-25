@@ -2,46 +2,39 @@ package com.project.hyuga.domain.etiquette.domain
 
 import com.project.hyuga.domain.etiquette.domain.type.Category
 import com.project.hyuga.domain.user.domain.User
-import com.project.hyuga.global.entity.BaseTimeEntity
-import javax.persistence.*
+import com.project.hyuga.global.entity.BaseEntity
+import java.time.LocalDate
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-@Entity
 @Table(name = "tbl_etiquette")
+@Entity
 class Etiquette(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
-
-    title: String,
-
-    content: String,
-
-    @field:NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(length = 13)
-    val category: Category,
+    override val id: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    val writer: User
-
-) : BaseTimeEntity() {
+    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+    val user: User?,
 
     @field:NotNull
-    @Column(length = 30)
-    var title = title
-        protected set
+    @Column(columnDefinition = "VARCHAR(50)")
+    val title: String,
 
     @field:NotNull
-    @Column(length = 1000)
-    var content = content
-        protected set
+    @Column(columnDefinition = "TEXT")
+    val content: String,
 
-    fun updateEtiquette(title: String, content: String) {
-        this.title = title
-        this.content = content
-    }
+    @field:NotNull
+    @Column(columnDefinition = "VARCHAR(15)")
+    val category: Category,
 
-}
+    override val createdAt: LocalDate
+
+) : BaseEntity(id)

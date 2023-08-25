@@ -24,3 +24,10 @@ jwt:
   redis:
     port: ${REDIS_PORT:6379}
     host: ${REDIS_HOST:localhost}
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

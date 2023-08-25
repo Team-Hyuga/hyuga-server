@@ -1,4 +1,4 @@
-package com.project.hyuga.domain.reliability.domain
+package com.project.hyuga.domain.problem.domain
 
 import com.project.hyuga.domain.user.domain.User
 import com.project.hyuga.global.entity.BaseTimeEntity
@@ -14,40 +14,35 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.MapsId
 import javax.persistence.Table
-import javax.validation.constraints.NotNull
 
-@Table(name = "tbl_user_reliability")
+@Table(name = "tbl_solution")
 @Entity
-class UserReliability(
+class Solution(
 
     @EmbeddedId
-    val id: UserReliabilityId,
+    val id: SolutionId,
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
     val user: User?,
 
-    @MapsId("reliabilityId")
+    @MapsId("problemId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reliability_id", columnDefinition = "BINARY(16)", nullable = false)
-    val reliability: Reliability?,
-
-    @field:NotNull
-    @Column(columnDefinition = "TINYINT")
-    val point: Int,
+    @JoinColumn(name = "problem_id", columnDefinition = "BINARY(16)", nullable = false)
+    val problem: Problem?,
 
     override val createdAt: LocalDate
 
 ) : BaseTimeEntity()
 
 @Embeddable
-data class UserReliabilityId(
+data class SolutionId(
 
     @Column(columnDefinition = "BINARY(16)", nullable = false)
     val userId: UUID,
 
     @Column(columnDefinition = "BINARY(16)", nullable = false)
-    val reliabilityId: UUID
+    val problemId: UUID
 
 ) : Serializable

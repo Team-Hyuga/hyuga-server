@@ -1,53 +1,48 @@
 package com.project.hyuga.domain.user.domain
 
 import com.project.hyuga.domain.badge.domain.BadgeStore
+import com.project.hyuga.domain.problem.domain.Solution
 import com.project.hyuga.domain.user.domain.type.Authority
-import org.hibernate.annotations.ColumnDefault
-import org.hibernate.annotations.DynamicInsert
-import javax.persistence.*
+import com.project.hyuga.global.entity.BaseUUIDEntity
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.OneToMany
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-@DynamicInsert
-@Entity
 @Table(name = "tbl_user")
+@Entity
 class User(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    override val id: UUID,
 
     @field:NotNull
     @Column(unique = true)
     val email: String,
 
     @field:NotNull
-    @Column(length = 10)
-    val name: String,
-
-    @field:NotNull
     @Column(columnDefinition = "CHAR(60)")
     val password: String,
 
-    @ColumnDefault("a")
-    @Column(nullable = false)
-    val profileImageUrl: String,
+    @field:NotNull
+    @Column(columnDefinition = "VARCHAR(10)")
+    val name: String,
 
     @field:NotNull
+    @Column(columnDefinition = "VARCHAR(6)")
     @Enumerated(EnumType.STRING)
-    @Column(length = 5)
     val authority: Authority,
 
-    @OneToMany(mappedBy = "user", cascade =[CascadeType.ALL], orphanRemoval = true)
-    val badgeStoreList: MutableList<BadgeStore> =  ArrayList()
+    @field:NotNull
+    val profileImageUrl: String = "a",
 
-) {
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    val solutions: MutableList<Solution> = mutableListOf(),
 
-    @Column(columnDefinition = "TINYINT", nullable = false)
-    var problemCount: Int = 0
-        protected set
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    val badges: MutableList<BadgeStore> = mutableListOf()
 
-    fun plusCount() {
-        this.problemCount++
-    }
-
-}
+) : BaseUUIDEntity(id)

@@ -1,30 +1,24 @@
 package com.project.hyuga.domain.reliability.domain
 
-import javax.persistence.*
+import com.project.hyuga.global.entity.BaseUUIDEntity
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
 
-@Entity
 @Table(name = "tbl_reliability")
-class Reliability {
+@Entity
+class Reliability(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    override val id: UUID,
 
-    @Column(nullable = false)
-    var totalScore = 0
-        protected set
+    @field:NotNull
+    @Column(columnDefinition = "INT")
+    val totalPoint: Int,
 
-    @Column(nullable = false)
-    var peopleCount = 0
-        protected set
+    @field:NotNull
+    @Column(columnDefinition = "TINYINT")
+    val grade: Int
 
-    @Column(nullable = false)
-    var grade = 0
-        protected set
-
-    fun addScoreAndCount(score: Int) {
-        this.totalScore += score
-        this.peopleCount++
-    }
-
-}
+) : BaseUUIDEntity(id)

@@ -24,25 +24,34 @@ repositories {
 
 dependencies {
 
+    // spring web
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
+    // spring security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // jwt
     implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+    // UUID
     implementation("com.fasterxml.uuid:java-uuid-generator:3.1.4")
 
-    implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+    //implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 
+    // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 

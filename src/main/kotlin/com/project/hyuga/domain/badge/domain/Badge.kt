@@ -1,27 +1,28 @@
 package com.project.hyuga.domain.badge.domain
 
 import com.project.hyuga.domain.etiquette.domain.type.Category
-import javax.persistence.*
+import com.project.hyuga.global.entity.BaseUUIDEntity
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
-@Entity
 @Table(name = "tbl_badge")
+@Entity
 class Badge(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    override val id: UUID,
 
     @field:NotNull
-    @Column(length = 10)
+    @Column(columnDefinition = "VARCHAR(10)")
     val name: String,
 
     @field:NotNull
-    val badgeImageUrl: String,
+    val imageUrl: String,
 
     @field:NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(length = 13)
+    @Column(columnDefinition = "VARCHAR(15)")
     val category: Category
 
-)
+) : BaseUUIDEntity(id)
