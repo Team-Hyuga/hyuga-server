@@ -1,7 +1,7 @@
 package com.project.hyuga.global.filter
 
-import com.project.hyuga.global.security.jwt.JwtProperties
-import com.project.hyuga.global.security.jwt.JwtProvider
+import com.project.hyuga.global.security.jwt.JwtConstant
+import com.project.hyuga.global.security.jwt.JwtParser
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationFilter(
-    private val jwtProvider: JwtProvider
+    private val jwtParser: JwtParser
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -17,23 +17,19 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = resolveToken(request)
-
+        val token = getToken(request)
         token?.let {
-            val authentication = jwtProvider.authentication(it)
-            SecurityContextHolder.getContext().authentication = authentication
+            SecurityContextHolder.getContext().authentication = jwtParser.getAuthentication(token)
         }
 
         filterChain.doFilter(request, response)
     }
 
-    private fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader(JwtProperties.HEADER)
+    private fun getToken(request: HttpServletRequest): String? {
+        val token = request.getHeader(JwtConstant.HEADER)
 
-        if (bearerToken != null && bearerToken.startsWith(JwtProperties.PREFIX)) {
-            return bearerToken.substring(JwtProperties.PREFIX.length)
-        }
-        return null
+        return if (!token.isNullOrEmpty() && token.startsWith(JwtConstant.PREFIX)) {
+            token.substring(JwtConstant.PREFIX.length);
+        } else null;
     }
-
 }

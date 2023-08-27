@@ -2,10 +2,11 @@ package com.project.hyuga.global.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.project.hyuga.global.error.exception.BusinessException
-import com.project.hyuga.global.error.exception.ErrorCode
 import com.project.hyuga.global.error.response.ErrorResponse
+import com.project.hyuga.global.exception.InternalServerErrorException
 import org.springframework.http.MediaType
 import org.springframework.web.filter.OncePerRequestFilter
+import java.nio.charset.StandardCharsets
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -21,20 +22,28 @@ class ExceptionHandlerFilter(
     ) {
         try {
             filterChain.doFilter(request, response)
-        } catch (e: BusinessException) {
-            setErrorResponse(e.errorCode, response)
         } catch (e: Exception) {
-            println(e.printStackTrace())
-            setErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, response)
+            when (e) {
+                is BusinessException -> setErrorResponse(response, e)
+                else -> {
+                    e.printStackTrace()
+                    setErrorResponse(response, InternalServerErrorException)
+                }
+            }
         }
     }
 
-    private fun setErrorResponse(errorCode: ErrorCode, response: HttpServletResponse) {
-        val errorResponse = ErrorResponse.of(errorCode)
-
-        response.status = errorCode.status
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.writer.write(objectMapper.writeValueAsString(errorResponse))
+    private fun setErrorResponse(
+        response: HttpServletResponse,
+        e: BusinessException
+    ) {
+        response.apply {
+            characterEncoding = StandardCharsets.UTF_8.name()
+            status = e.status
+            contentType = MediaType.APPLICATION_JSON_VALUE
+            writer.write(
+                objectMapper.writeValueAsString(ErrorResponse.of(e))
+            )
+        }
     }
-
 }
